@@ -7,6 +7,7 @@ Here's what we're running:
 * Source Control - [gitea](https://docs.gitea.io/en-us/)
 * Task Runner (will CI/CD, backups, monitoring) - [Concourse](https://concourse-ci.org/docs.html)
 * Webserver - [Caddy](https://caddyserver.com/docs/)
+* Task Manangement - [Taiga](https://taigaio.github.io/taiga-doc/dist/)
 * Team Communication - [Mattermost](https://docs.mattermost.com/install/install-kubernetes.html)
 * User Management -[Recognizer](https://github.com/system76/recognizer)
 * Notifications - [Bullhorn](https://github.com/system76/bullhorn)
@@ -118,6 +119,11 @@ kubectl label node workerName node-role.kubernetes.io/worker=worker
 https://github.com/rancher/local-path-provisioner/blob/master/README.md#usage
 
 
+// trying local storage options
+
+kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
+
+
 
 # Source Control - Gitea
 
@@ -139,6 +145,10 @@ This post will just start with CI/CD that deploys Gitea and Concourse changes. W
 I'll be using [Caddy](https://caddyserver.com/docs/) to host a static website to serve this blog. Gitea will host the source code and Concourse will deploy changes.
 
 The website will start simple, but I'll have a series of posts about web development as more posts will necessitate a better website to display them.
+
+# Task Manangement - Taiga
+
+Something somthing [Taiga](https://taigaio.github.io/taiga-doc/dist/)
 
 # Team Communication - Mattermost
 

@@ -33,6 +33,42 @@ spec:
     requests:
       storage: 20Gi
 ---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: gitea-postgres-pv
+spec:
+  capacity:
+    storage: 20Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-path
+  local:
+    path: /saddle/gitea-postgres
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - worker
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: gitea-postgres-pv
+  namespace: scm
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 20Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
