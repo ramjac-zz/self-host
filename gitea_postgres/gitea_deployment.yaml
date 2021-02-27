@@ -16,15 +16,38 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: gitea-pv-claim
-  labels:
-    app: gitea
+  name: gitea-pvc
+  namespace: scm
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: local-path
   resources:
     requests:
       storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: gitea-pv
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-path
+  local:
+    path: /saddle/gitea
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - worker
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -47,7 +70,7 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image: gitea:4.8-apache
+      - image: gitea/gitea:1.13.2
         name: gitea
         env:
         - name: USER_UID
@@ -57,7 +80,7 @@ spec:
         - name: DB_TYPE
           value: postgres
         - name: DB_HOST
-          value: db:3306
+          value: gitea-postgres-svc:3306
         - name: DB_NAME
           value: gitea
         - name: DB_USER
@@ -76,4 +99,4 @@ spec:
       volumes:
       - name: gitea-persistent-storage
         persistentVolumeClaim:
-          claimName: gitea-pv-claim
+          claimName: gitea-pvc

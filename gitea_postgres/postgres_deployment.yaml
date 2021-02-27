@@ -55,19 +55,6 @@ spec:
           operator: In
           values:
           - worker
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: gitea-postgres-pv
-  namespace: scm
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
-  resources:
-    requests:
-      storage: 20Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
